@@ -25,6 +25,10 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cors())
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+
 app.use((req, res, next) => {
   if (req.query.delay) return setTimeout(next, parseInt(req.query.delay, 10))
   next()
@@ -40,7 +44,13 @@ app.use('/api', comments)
 app.use('/api', cameras)
 app.use('/api', books)
 app.use('/api', movies)
-app.get('/', (req, res, next) => res.redirect('/api'))
+//app.get('/', (req, res, next) => res.redirect('/api'))
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 
 app.use(function(req, res, next) {
   const err = new Error('Not Found')

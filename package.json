@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "NODE_ENV=test mocha --recursive test"
+    "test": "NODE_ENV=test mocha --recursive test",
+    "heroku-postbuild": "cd client && npm install && npm run build"
+
   },
   "dependencies": {
     "body-parser": "^1.18.3",
